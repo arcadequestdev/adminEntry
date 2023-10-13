@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Influencer from './influencer';
 import Session from './session';
+import { useDispatch } from "react-redux";
 const { Header, Sider, Content } = Layout;
 
 const Board = ({history}) => {
@@ -36,6 +37,14 @@ const Board = ({history}) => {
   const [admins, setAdmins] = useState([]);
   const [influencers, setInfluencers] = useState([]);
   const {  profile } = useSelector((state) => state.user);
+
+
+  const dispatch = useDispatch();
+
+  const logout = () => ({
+    type:"LOG_OUT",
+    payload:null
+  });
 
 
   useEffect(() => {
@@ -212,7 +221,7 @@ Admin
             className: 'trigger',
             onClick: () => setCollapsed(!collapsed),
           })}
-
+          <Button style={{height:42, marginLeft:16}} onClick={() => {dispatch(logout())}}>Back To Main Site</Button>
         </Header>
         <Content
           className="site-layout-background"
