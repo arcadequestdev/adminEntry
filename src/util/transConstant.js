@@ -1,0 +1,12 @@
+//transaction type
+export const JOIN_MATCH = "JOIN_MATCH";
+export const REDEEM_PRIZE = "REDEEM_PRIZE";
+export const PURCHASE_TOKEN_ONE_TIME = "PURCHASE_TOKEN_ONE_TIME";
+export const PURCHASE_TOKEN_SUBSCRIPTION = "PURCHASE_TOKEN_SUBSCRIPTION";
+export const GIVE_REWARD = "GIVE_REWARD";
+export const EXTRA_REWARD = "EXTRA_REWARD";
+export const MODIFY_BY_ADMIN = "MODIFY_BY_ADMIN";
+
+//amount_type
+export const INCREASE_TOKEN = "INCREASE_TOKEN";
+export const REDUCE_TOKEN = "REDUCE_TOKEN";
