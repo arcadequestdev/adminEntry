@@ -74,6 +74,7 @@ export const ARCHIVE_ORDER = `${domain}/prize/archive`;
 export const DELETE_CODE = `${domain}/prize/delete_code`;
 export const CREATE_EXCHANGE_ORDER= `${domain}/prize/create_exchange_order`;
 export const CONFIRM_EXCHANGE_ORDER = `${domain}/prize/confirm_exchange_order`;
+export const ARCHIEVE_EXCHANGE_ORDER = `${domain}/prize/archieve_exchange_order`;
 
 //admin
 export const ADMIN_GIVE_TOKEN = `${domain}/admin/giveToken`;

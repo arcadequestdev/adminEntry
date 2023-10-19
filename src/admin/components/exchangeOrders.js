@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Table, Button, Modal, Input} from 'antd';
+import { Table, Button, Modal, Input, message} from 'antd';
 import Firebase from "../../util/firebase";
 import styled from "styled-components";
 import moment from "moment";
@@ -7,7 +7,7 @@ import { debounce } from "lodash";
 import * as API from "../../util/api";
 import axios from "axios";
 
-const ExchangeOrders = () => {
+const ExchangeOrders = ({getUserEmail}) => {
   const [options, setOptions] = useState([]);
   const [exchangeHistory, setExchangeHistory] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -67,6 +67,10 @@ const fulfilledOrder = useMemo(() => {
   return exchangeHistory.filter(item => item.status === 1);
 },[exchangeHistory]);
 
+const archievedOrder = useMemo(() => {
+  return exchangeHistory.filter(item => item.status === -1);
+},[exchangeHistory]);
+
 const debounceConfirm = debounce(() => {
   confirm();
 },500)
@@ -115,6 +119,24 @@ const confirm = async() => {
   }
 }
 
+const archieveOrder = async (record) => {
+  const {orderId} = record;
+  try {
+    const requestBody = {
+      orderId
+    }
+    const url = API.ARCHIEVE_EXCHANGE_ORDER;
+    const res = await axios.post(url, requestBody);
+    if(res.status === 200){
+      message.success("This Order is archieved")
+    }else {
+      message.error("Failed to archieve order, please try again")
+    } 
+  }catch(err){
+    message.error("Failed to archieve order, please try again")
+  }
+}
+
 const openModal = (record) => {
   setCurrent(record);
   setModalOpen(true);
@@ -127,7 +149,14 @@ const FulfilledColumn = [
     key: "userName",
   },
   {
-    title:"email",
+    title:'User Email',
+    key:'userEmail',
+    render:(record) => {
+     return getUserEmail(record.userId)
+    }
+  },
+  {
+    title:"Payment Receive Email",
     dataIndex:"email",
     key:"email"
   },
@@ -158,11 +187,63 @@ const FulfilledColumn = [
   
 ]
 
+const ArchievedColumn = [
+  {
+    title: "User",
+    dataIndex: "userName",
+    key: "userName",
+  },
+  {
+    title:'User Email',
+    key:'userEmail',
+    render:(record) => {
+     return getUserEmail(record.userId)
+    }
+  },
+  {
+    title:"Payment Receive Email",
+    dataIndex:"email",
+    key:"email"
+  },
+  {
+    title: "Order At",
+    render:(record) => {
+      return moment(record.createdAt).format("l")
+    },
+    sorter:timeSortCreatedAt
+  },
+  {
+    title:"value",
+    dataIndex:'value',
+    key:"value"
+  },
+  {
+    title: "Aricheved At",
+    render:(record) => {
+      return moment(record.archievedAt).format("l")
+    },
+    sorter:timeSortConfirmedAt
+  },
+  {
+    title:"Reference",
+    dataIndex:"reference",
+    key:"reference"
+  }
+  
+]
+
 const pendingColum = [
   {
     title: "User",
     dataIndex: "userName",
     key: "userName",
+  },
+  {
+    title:'User Email',
+    key:'userEmail',
+    render:(record) => {
+      return getUserEmail(record.userId)
+    }
   },
   {
     title:"email",
@@ -188,6 +269,13 @@ const pendingColum = [
       openModal(record)
     }}>Confirm Transfer</Button>,
   },
+  {
+    title: 'Action',
+    key: 'operation',
+    render: (record) => <Button type="primary" onClick={()=> {
+      archieveOrder(record)
+    }}>Archieve</Button>,
+  },
 ]
 
 return <Container>
@@ -200,6 +288,12 @@ return <Container>
   <Table
     columns={FulfilledColumn}
     dataSource={fulfilledOrder}
+  />
+
+<h3 style={{marginTop:24}}>Archieved Orders</h3>
+  <Table
+    columns={ArchievedColumn}
+    dataSource={archievedOrder}
   />
 
   <Modal title={`Confirm Transfer`} visible={modalOpen} 

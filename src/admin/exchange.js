@@ -81,6 +81,15 @@ const Exchange = ({players, streamers, admins}) => {
     },
   ];
 
+  const getUserEmail = (userId) => {
+    const target = players.find(item => item.userId === userId);
+    if(target){
+      return target.email
+    }else {
+      return '--'
+    }
+  }
+
 
   return <Tabs defaultActiveKey="2" size="large">
     <TabPane tab="Multiplier Subs" key="1">
@@ -100,7 +109,7 @@ const Exchange = ({players, streamers, admins}) => {
       </Container>
       </TabPane>
       <TabPane tab="Exchange Order" key="2">
-        <ExchangeOrders />
+        <ExchangeOrders getUserEmail={getUserEmail}/>
       </TabPane>
   </Tabs>
 }
