@@ -6,34 +6,9 @@ import ReactPlayer from "react-player";
 const { Panel } = Collapse;
 
 const ProductList = ({partnerId, games}) => {
-  const [list, setList] = useState([]);
-
-  useEffect(() => {
-    const fetchProducts = async() => {
-      let result = [];
-      for(let i=0; i< games.length; i++){
-        const gameRef = Firebase.firestore().collection("partnerGames").doc(games[i]);
-        try {
-          const doc = await gameRef.get();
-          const data = doc.data();
-          const obj = {
-            ...data,
-            gameId:games[i]
-          }
-          result.push(obj);
-        }catch(err){
-          console.log(err)
-        }
-      }
-      setList(result);
-    }
-    fetchProducts();
-  },[games]);
-
-
   return <Collapse>
   {
-    list.map((item) => {
+    games.map((item) => {
       return <Panel header={item.name} key={item.productId}>
       <Descriptions bordered labelStyle={{width:'10%'}}>
       <Descriptions.Item label="Name" span={3}>{item.name}</Descriptions.Item>

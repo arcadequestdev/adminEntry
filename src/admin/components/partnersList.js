@@ -10,7 +10,7 @@ import EditBrandTeamModal from './editBrandTeamModal.js';
 const { Panel } = Collapse;
 const { Title } = Typography;
 
-const PartnersList = ({partners}) => {
+const PartnersList = ({partners, games}) => {
   const [current, setCurrent] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [teamModalOpen, setTeamModalOpen] = useState(false);
@@ -26,6 +26,10 @@ const PartnersList = ({partners}) => {
   const gamePublisher = useMemo(() => {
     return partners.filter(item => item.type === 'game_publisher');
   }, [partners]);
+
+  const getGameList = (partnerId) => {
+    return games.filter(item => item.companyId === partnerId);
+  }
 
 
   return <>
@@ -119,7 +123,7 @@ const PartnersList = ({partners}) => {
   </Button>
   </ButtonContainer>
   <h3 style={{marginTop:12}}>Games</h3>
-  <GameList partnerId={item.partnerId} games={item.games}/>
+  <GameList partnerId={item.partnerId} games={getGameList(item.partnerId)}/>
   </Panel>
   })}
   </Collapse>

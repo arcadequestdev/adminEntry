@@ -290,7 +290,7 @@ return <Container>
     dataSource={fulfilledOrder}
   />
 
-<h3 style={{marginTop:24}}>Archieved Orders</h3>
+<h3 style={{marginTop:24}}>Archived Orders</h3>
   <Table
     columns={ArchievedColumn}
     dataSource={archievedOrder}

@@ -193,6 +193,7 @@ export const PUBLISH_GAME = `${domain}/partner/publish_game`;
 export const SUBMIT_GAME_REVIEW = `${domain}/partner/submit_game_review`;
 export const GET_GAME_SHORTLIST = `${domain}/partner/get_game_shortlist`;
 export const GET_GAME_ALLLIST = `${domain}/partner/get_game_allList`;
+export const CHANGE_GAME_STATUS = `${domain}/partner/change_game_status`;
 
 // influencers
 export const CREATE_INFLUENCERS = `${domain}/influencer/create`;
@@ -291,6 +292,9 @@ export const TOURNAMENT_CONFIRMROUND = `${domain}/tournament/confirmRound`;
 export const TOURNAMENT_CHECKIN = `${domain}/tournament/checkIn`;
 export const TOURNAMENT_JOINASSUB = `${domain}/tournament/join_as_sub`;
 export const TOURNAMENT_JOINWITHCOINS = `${domain}/tournament/join_with_coins`;
+
+// twitch
+export const GET_ALLGAME_STREAMING_DATA = `${domain}/twitch/all_game_streaming_data`;
 
 
 /* export const RESCHEDULE_QUEST = `${rescheduleDomain}/quests/reschedule`; */
