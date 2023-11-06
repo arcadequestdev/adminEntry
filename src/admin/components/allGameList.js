@@ -2,11 +2,14 @@ import React, {useEffect, useState, useMemo} from 'react';
 import { Table, Button, message} from 'antd';
 import axios from 'axios';
 import * as API from "../../util/api";
+import SetPriceModal from './setPriceModal';
 
 
 const AllGameList = ({games}) => {
 
   const [streamingData, setStreamingData] = useState([]);
+  const [priceModalOpen, setPriceModalOpen] = useState(false);
+  const [currentRecord, setCurrentRecord] = useState(null);
 
   useEffect(() => {
   
@@ -100,11 +103,43 @@ const AllGameList = ({games}) => {
         </Button>
       }
     }
+  },
+  {
+    title:"Promote Price",
+    render:(record) => {
+      return <Button type="primary" onClick={() => {
+        setCurrentRecord(record);
+        setPriceModalOpen(true)
+      }}>
+        Set Price
+      </Button>
+    }
+  },
+  {
+    title:"Keys",
+    render:(record) => {
+      return <Button type="primary">
+        Manage Keys
+      </Button>
+    }
   }
 ]
 
   return <>
   <Table columns={columns} dataSource={dataSourece} />
+  {
+    currentRecord && <SetPriceModal
+    currentRecord={currentRecord}
+    visible={priceModalOpen}
+    handleCancel={() => {
+      setPriceModalOpen(false)
+    }}
+    handleFinish={() => {
+      setPriceModalOpen(false);
+      setCurrentRecord(null)
+    }}
+/>
+  }
   </>
 }
 

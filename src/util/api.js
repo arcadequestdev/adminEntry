@@ -194,6 +194,7 @@ export const SUBMIT_GAME_REVIEW = `${domain}/partner/submit_game_review`;
 export const GET_GAME_SHORTLIST = `${domain}/partner/get_game_shortlist`;
 export const GET_GAME_ALLLIST = `${domain}/partner/get_game_allList`;
 export const CHANGE_GAME_STATUS = `${domain}/partner/change_game_status`;
+export const SET_GAME_PROMOTE_PRICE = `${domain}/partner/set_game_promote_price`;
 
 // influencers
 export const CREATE_INFLUENCERS = `${domain}/influencer/create`;
