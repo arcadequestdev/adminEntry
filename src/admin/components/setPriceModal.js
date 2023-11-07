@@ -1,19 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import {  Modal, Button, Input, message } from 'antd';
-import styled from "styled-components";
-import { useSelector } from "react-redux";
 import * as API from "../../util/api";
 import axios from "axios";
 
 
 const SetPriceModal = ({currentRecord, visible,  handleCancel, handleFinish}) => {
-  const [price, setPrice] = useState("")
+  const [price, setPrice] = useState("");
+  const [originalPrice, setOriginalPrice] = useState("")
 
   useEffect(() => {
     if(currentRecord && currentRecord.promote_price){
-      setPrice(currentRecord.promote_price)
+      setPrice(currentRecord.promote_price);
+      setOriginalPrice(currentRecord.original_price)
     }else {
-      setPrice("")
+      setPrice("");
+      setOriginalPrice("")
     }
   },[visible, currentRecord]);
 
@@ -21,9 +22,10 @@ const SetPriceModal = ({currentRecord, visible,  handleCancel, handleFinish}) =>
     try {
       const requestBody = {
         gameId:currentRecord.gameId,
-        promote_price:price
+        promote_price:price,
+        original_price:originalPrice
       }
-      const url = API.SET_GAME_PROMOTE_PRICE;
+      const url = API.SET_GAME_PRICE;
       const res = await axios.post(url, requestBody);
       if(res.status === 200){
         message.success("Promote Price is set for this game");
@@ -50,11 +52,27 @@ const SetPriceModal = ({currentRecord, visible,  handleCancel, handleFinish}) =>
     </Button>
   ]}>
   <h3>
+    Original Price: {currentRecord.original_price?? 'Not Set'} $USD
+  </h3>
+  <h3>
     Current Promote Price: {currentRecord.promote_price?? "Not Set"} $USD
   </h3>
+  <div style={{display:'flex', alignItems:'center',  marginBottom:16}}>
+    <span style={{display:'inline-block'}}>
+    Original Price: 
+    </span>
+  <Input value={originalPrice} onChange={(e) => {
+    setOriginalPrice(e.target.value)
+  }} /> $USD
+  </div>
+  <div style={{display:'flex', alignItems:'center'}}>
+    <span style={{display:'inline-block'}}>
+    Promote Price: 
+    </span>
   <Input value={price} onChange={(e) => {
     setPrice(e.target.value)
-  }} /> in $USD
+  }} /> $USD
+  </div>
   </Modal>
 }
 
