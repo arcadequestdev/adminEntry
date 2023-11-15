@@ -16,7 +16,7 @@ const AddGameKeysModal = ({currentRecord, visible,  handleCancel, handleFinish})
         gameId:currentRecord.gameId,
         code:item
       }
-      const url = API.DELETE_GAME_CODE;
+      const url = API.DELETE_GAME_SALE_CODE;
       const res = await axios.post(url, requestBody);
       if(res.status === 200){
         message.success("Successfully delete the code")
@@ -36,7 +36,7 @@ const AddGameKeysModal = ({currentRecord, visible,  handleCancel, handleFinish})
         gameId:currentRecord.gameId,
         codeArray:newKeys
       } 
-      const url = API.ADD_GAME_CODE_ARRAY;
+      const url = API.ADD_SALE_GAME_CODE_ARRAY;
       const res = await axios.post(url, requestBody);
       if(res.status === 200){
         message.success("Code added")
@@ -65,7 +65,7 @@ const AddGameKeysModal = ({currentRecord, visible,  handleCancel, handleFinish})
         pagination={{
           pageSize: 5,
         }}
-        dataSource={currentRecord.availableCodes}
+        dataSource={currentRecord.codesForSale}
         renderItem={(item, index) => (
           <List.Item
             actions={[
