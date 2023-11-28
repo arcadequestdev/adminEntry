@@ -4,6 +4,7 @@ import Firebase from "../util/firebase";
 import styled from "styled-components";
 import CreatePartnerForm from "./components/createPartnerForm";
 import CreateGameForm from "./components/createGameForm";
+import CreateGameByAppId from "./components/createGameByAppId";
 import PartnersList from "./components/partnersList";
 import CreateProductForm from "./components/createProductForm";
 import AllGameList from "./components/allGameList";
@@ -71,7 +72,8 @@ const Partner = () => {
   </TabPane>
   <TabPane tab="Create New Game" key="4">
   <Container>
-    <CreateGameForm partners={partners} />
+    {/* <CreateGameForm partners={partners} /> */}
+    <CreateGameByAppId partners={partners} />
   </Container>
   </TabPane>
   <TabPane tab="Current Games" key="5">
