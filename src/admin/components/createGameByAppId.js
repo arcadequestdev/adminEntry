@@ -8,7 +8,6 @@ import {
 import * as API from "../../util/api";
 import axios from "axios";
 import { debounce } from "lodash";
-import { withRouter } from 'react-router-dom/cjs/react-router-dom.min';
 
 const { Option } = Select;
 
@@ -114,4 +113,4 @@ const CreateGameByAppId = ({partners}) => {
   </>
 }
 
-export default withRouter(CreateGameByAppId)
+export default CreateGameByAppId;

@@ -3,7 +3,6 @@ import { Tabs } from 'antd';
 import Firebase from "../util/firebase";
 import styled from "styled-components";
 import CreatePartnerForm from "./components/createPartnerForm";
-import CreateGameForm from "./components/createGameForm";
 import CreateGameByAppId from "./components/createGameByAppId";
 import PartnersList from "./components/partnersList";
 import CreateProductForm from "./components/createProductForm";
@@ -11,47 +10,7 @@ import AllGameList from "./components/allGameList";
 import { useSelector } from "react-redux";
 const { TabPane } = Tabs;
 
-const Partner = () => {
-
-  const [partners, setPartners] = useState([]);
-  const [games, setGames] = useState([]);
-
-  useEffect(() => {
-    const listener  = Firebase.firestore().collection('partners')
-      .onSnapshot(querySnapshot => {
-        let result = []
-        querySnapshot.docs.forEach(doc => {
-        const obj = {
-          ...doc.data(),
-          partnerId: doc.id
-        }
-        result.push(obj);
-      });
-      setPartners(result)
-    });
-    return () => {
-      listener();
-    }
-  },[]);
-
-  useEffect(() => {
-    const listener  = Firebase.firestore().collection('partnerGames')
-      .onSnapshot(querySnapshot => {
-        let result = []
-        querySnapshot.docs.forEach(doc => {
-        const obj = {
-          ...doc.data(),
-          gameId: doc.id
-        }
-        result.push(obj);
-      });
-      setGames(result)
-    });
-    return () => {
-      listener();
-    }
-    
-  }, [])
+const Partner = ({partners, games}) => {
 
 
   return <Tabs defaultActiveKey="1" size="large">

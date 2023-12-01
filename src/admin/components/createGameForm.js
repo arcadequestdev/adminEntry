@@ -261,8 +261,8 @@ const CreateGameForm = ({partners}) => {
       </Form.Item>
 
       <Form.Item
-        name="bannerUrl"
-        label="Banner Image"
+        name="backgroundImage"
+        label="Background Image"
         labelAlign='Right'
         style={{marginBottom:0}}
       >

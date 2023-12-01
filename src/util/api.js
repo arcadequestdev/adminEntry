@@ -302,3 +302,6 @@ export const GET_ALLGAME_STREAMING_DATA = `${domain}/twitch/all_game_streaming_d
 
 
 /* export const RESCHEDULE_QUEST = `${rescheduleDomain}/quests/reschedule`; */
+
+//liveshoppingEvent
+export const CREATE_LIVE_SHOPPING = `${domain}/liveShoppingEvent/create`;

@@ -23,13 +23,13 @@ import Subscribers from "./subscribers"
 import Exchange from "./exchange";
 import Firebase from "../util/firebase";
 import { useSelector } from "react-redux";
-import { withRouter } from "react-router-dom";
 import Influencer from './influencer';
 import Session from './session';
+import LiveShoppingEvents from './liveShoppingEvents';
 import { useDispatch } from "react-redux";
 const { Header, Sider, Content } = Layout;
 
-const Board = ({history}) => {
+const Board = ({}) => {
   const [option, setOption] = useState("1");
   const [collapsed, setCollapsed] = useState(false);
   const [players, setPlayers] = useState([]);
@@ -37,6 +37,46 @@ const Board = ({history}) => {
   const [admins, setAdmins] = useState([]);
   const [influencers, setInfluencers] = useState([]);
   const {  profile } = useSelector((state) => state.user);
+
+  const [partners, setPartners] = useState([]);
+  const [games, setGames] = useState([]);
+
+  useEffect(() => {
+    const listener  = Firebase.firestore().collection('partners')
+      .onSnapshot(querySnapshot => {
+        let result = []
+        querySnapshot.docs.forEach(doc => {
+        const obj = {
+          ...doc.data(),
+          partnerId: doc.id
+        }
+        result.push(obj);
+      });
+      setPartners(result)
+    });
+    return () => {
+      listener();
+    }
+  },[]);
+
+  useEffect(() => {
+    const listener  = Firebase.firestore().collection('partnerGames')
+      .onSnapshot(querySnapshot => {
+        let result = []
+        querySnapshot.docs.forEach(doc => {
+        const obj = {
+          ...doc.data(),
+          gameId: doc.id
+        }
+        result.push(obj);
+      });
+      setGames(result)
+    });
+    return () => {
+      listener();
+    }
+    
+  }, [])
 
 
   const dispatch = useDispatch();
@@ -53,7 +93,6 @@ const Board = ({history}) => {
    const checkPermission = () => {
     const permission_level = profile?.permission_level ?? 0;
     if(!profile || permission_level !== 2){
-      history.push("/login")
     }
    }
 
@@ -93,7 +132,7 @@ const Board = ({history}) => {
         matchListener()
       }
     }
-  },[profile, history]);
+  },[profile]);
 
 
   useEffect(() => {
@@ -208,6 +247,11 @@ Admin
            }}>
           Brand Session
           </Menu.Item> 
+          <Menu.Item key="13" icon={<PayCircleOutlined />} onClick={()=> {
+             setOption("13")
+           }}>
+          Live Shopping Event
+          </Menu.Item> 
         </Menu>
       </Sider>
       <Layout className="site-layout">
@@ -252,7 +296,7 @@ Admin
             option === "6" && <MatchStatus matches={matches}/>
           } */}
           {
-            option === "7" && <Partner />
+            option === "7" && <Partner partners={partners} games={games}/>
           }
           {
             option === "8" && <Subscribers players={players}/>
@@ -269,10 +313,13 @@ Admin
           {
             option === '12' && <Session influencers={influencers} />
           }
+          { 
+            option === '13' && <LiveShoppingEvents partners={partners} games={games}/>
+          }
         </Content>
       </Layout>
     </Layout>
   );
 };
 
-export default withRouter(Board);
+export default Board;
