@@ -89,6 +89,23 @@ const EventControl = ({viewAll, event, games}) => {
     }
   }
 
+  const clearPromoteGame = async () => {
+    try {
+      const requestBody = {
+        eventId:event.eventId
+      }
+      const url = API.CLEAR_EVENT_PROMOTE_GAME;
+      const res = await axios.post(url, requestBody);
+      if(res.status === 200){
+        message.success("No Current Promote Game Now")
+      }else {
+        message.error("Failed to clear, please try again")
+      }
+    }catch(err){
+      message.error("Failed to clear, please try again")
+    }
+  }
+
   const gameColumn = [
     {
       title: "Name",
@@ -207,7 +224,9 @@ const EventControl = ({viewAll, event, games}) => {
             <Title level={5}>
             Current Promote Game: {currentGame}
           </Title>
-          <Button type="primary" style={{marginLeft:'auto'}}>
+          <Button type="primary" style={{marginLeft:'auto'}} onClick={() => {
+            clearPromoteGame()
+          }}>
           Clear
           </Button>
           </div> 
