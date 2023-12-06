@@ -53,6 +53,24 @@ const EventControl = ({viewAll, event, games}) => {
     }
   } 
 
+  const selectPromoteGame = async (gameId) => {
+    try {
+      const requestBody = {
+        eventId:event.eventId,
+        gameId
+      }
+      const url = API.SELECT_EVENT_PROMOTE_GAME;
+      const res = await axios.post(url, requestBody);
+      if(res.status === 200){
+        message.success("Game is selected as current promote game")
+      }else {
+        message.error("Failed to select game, please try again")
+      }
+    }catch(err){
+      message.error("Failed to select game please try again")
+    }
+  }
+
   const removeGame = async (gameId) => {
     try {
       const requestBody = {
@@ -100,9 +118,25 @@ const EventControl = ({viewAll, event, games}) => {
              Remove
            </Button>
         }
+        if(event.status === 1 && event?.currentPromoteGame !== record.gameId){
+          return <Button type="primary" onClick={() => {
+            selectPromoteGame(record.gameId)
+           }}>
+             Select
+           </Button>
+        }
       }
     }
   ]
+
+  const currentGame = useMemo(() => {
+    if(event.currentPromoteGame && event.status === 1){
+      const {games} = event;
+      const target = games.find(item => item.gameId === event.currentPromoteGame);
+      return target?.gameName;
+    }
+    return null;
+  }, [event])
 
   return <>
   <Button onClick={viewAll}>
@@ -166,7 +200,18 @@ const EventControl = ({viewAll, event, games}) => {
             Add New Game
             </Button>
           }
+
         </div>
+        {
+          currentGame && <div style={{display:'flex', marginBottom:12}}>
+            <Title level={5}>
+            Current Promote Game: {currentGame}
+          </Title>
+          <Button type="primary" style={{marginLeft:'auto'}}>
+          Clear
+          </Button>
+          </div> 
+        }
         <Table
           columns={gameColumn}
           dataSource={event.games}
