@@ -1,9 +1,11 @@
 import React, {useState, useMemo} from 'react';
-import { Descriptions, Collapse, Button, Modal, Input, message, Typography, Col, Divider, Row} from 'antd';
+import { Descriptions, Collapse, Button, Modal, Input, message, Typography, Col, Divider, Row, Table} from 'antd';
 import styled from "styled-components";
 import moment from 'moment';
 import ReactPlayer from "react-player";
 import EventAddGameForm from './eventAddGameForm';
+import * as API from "../../util/api";
+import axios from "axios";
 
 const { Title } = Typography;
 
@@ -16,6 +18,91 @@ const EventControl = ({viewAll, event, games}) => {
     if(status === 2) return 'Ended'
     if(status === -1)  return 'Cancelled'
   }
+
+  const startEvent = async () => {
+    try {
+      const requestBody = {
+        eventId:event.eventId
+      }
+      const url = API.START_EVENT;
+      const res = await axios.post(url, requestBody);
+      if(res.status === 200){
+        message.success("Event is Started")
+      }else {
+        message.error("Failed to start event, please try again")
+      }
+    }catch(err){
+      message.error("Failed to start event, please try again")
+    }
+  } 
+
+  const endEvent = async () => {
+    try {
+      const requestBody = {
+        eventId:event.eventId
+      }
+      const url = API.END_EVENT;
+      const res = await axios.post(url, requestBody);
+      if(res.status === 200){
+        message.success("Event is Ended")
+      }else {
+        message.error("Failed to end event, please try again")
+      }
+    }catch(err){
+      message.error("Failed to end event, please try again")
+    }
+  } 
+
+  const removeGame = async (gameId) => {
+    try {
+      const requestBody = {
+        gameId,
+        eventId:event.eventId
+      }
+      const url = API.REMOVE_GAME_FROM_EVENT;
+      const res = await axios.post(url, requestBody);
+      if(res.status === 200){
+        message.success("Game is removed, reserved codes are released")
+      }else {
+        message.error("Failed to remove game, please try again")
+      }
+    }catch(err){
+      message.error("Failed to remove game, please try again")
+    }
+  }
+
+  const gameColumn = [
+    {
+      title: "Name",
+      dataIndex: "gameName",
+      key: "gameName",
+    },
+    {
+      title:'Price',
+      key:'price',
+      dataIndex:'price'
+    },
+    {
+      title:'Copies',
+      key:'copies',
+      render:(record) => {
+        return record?.codes?.length
+      }
+    },
+    {
+      title:'',
+      key:'operation',
+      render:(record) => {
+        if(event.status === 0){
+          return <Button type="primary" onClick={() => {
+            removeGame(record.gameId)
+           }}>
+             Remove
+           </Button>
+        }
+      }
+    }
+  ]
 
   return <>
   <Button onClick={viewAll}>
@@ -30,14 +117,18 @@ const EventControl = ({viewAll, event, games}) => {
         <Button type="primary" style={{marginRight:16, marginLeft:"auto"}} >
           Edit
         </Button>
-        <Button type="primary" >
+        <Button type="primary" onClick={() => {
+          startEvent()
+        }}>
           Start
         </Button>
         </>
       }
       {
-        event.status === 1 && <Button type="primary" >
-        Edit
+        event.status === 1 && <Button type="primary" style={{marginLeft:'auto'}} onClick={() => {
+          endEvent()
+        }}>
+        End
       </Button>
       }
     </div>
@@ -50,7 +141,7 @@ const EventControl = ({viewAll, event, games}) => {
       <Descriptions.Item label="Status" span={1}>{getStatusMap(event.status)}</Descriptions.Item>
       <Descriptions.Item label="Register Users" span={1}>{event?.registerUsers?.length}</Descriptions.Item>
       <Descriptions.Item label="Promote Games" span={2}>{event?.games?.length}</Descriptions.Item>
-      <Descriptions.Item label="Background" span={2}><img src={event.backgroundImage} alt="background"/></Descriptions.Item>
+      <Descriptions.Item label="Background" span={2}><img src={event.backgroundImage} alt="background" style={{width:200}}/></Descriptions.Item>
       <Descriptions.Item label="Promo Video" span={2}>{
         event.video && 
           <ReactPlayer
@@ -66,14 +157,20 @@ const EventControl = ({viewAll, event, games}) => {
   <Divider orientation="left">Games And Orders</Divider>
     <Row gutter={24}>
       <Col className="gutter-row" span={12}>
-        <div style={{display:'flex', alignItems:'center'}}>
+        <div style={{display:'flex', alignItems:'center', marginBottom:16}}>
           <Title level={4}>Promote Games</Title>
-          <Button style={{marginLeft:'auto'}} type="primary" onClick={() => {
-            setOpen(true)
-          }}>
-          Add New Game
-          </Button>
+          {
+            event.status === 0 && <Button style={{marginLeft:'auto'}} type="primary" onClick={() => {
+              setOpen(true)
+            }}>
+            Add New Game
+            </Button>
+          }
         </div>
+        <Table
+          columns={gameColumn}
+          dataSource={event.games}
+          />
       </Col>
       <Col className="gutter-row" span={12}>
         <div >col-6</div>
@@ -85,6 +182,7 @@ const EventControl = ({viewAll, event, games}) => {
       setOpen(false)
     }}
     games={games}
+    event={event}
     />
   </>
 }

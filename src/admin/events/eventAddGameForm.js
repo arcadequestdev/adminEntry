@@ -1,15 +1,56 @@
-import { Button, Form, Input, Modal, Radio } from 'antd';
-import React, { useState } from 'react';
-import { Select } from 'antd';
+import { Button, Form, Input, Modal, Radio, Typography} from 'antd';
+import React, { useMemo } from 'react';
+import { Select, message} from 'antd';
+import * as API from "../../util/api";
+import axios from "axios";
 
-const EventAddGameForm = ({ visible, onCreate, onCancel, games }) => {
+const { Title } = Typography;
+
+const EventAddGameForm = ({ visible, onCancel, games, event }) => {
   const options = (games??[]).map((item) => {
     return {
       value:item.gameId,
       label:item.name
     }
-  })
+  });
+
+  const addGameToEvent = async (values) => {
+    try {
+      const game = games.find(item => item.gameId === values.gameId);
+      const gameName = game?.name;
+      const availableCopies = game?.codesForSale?.length?? 0;
+      if(parseInt(values.copies) > availableCopies){
+        message.error("This Game does not have enough copies");
+        throw new Error("No Enough Copies")
+      }
+      const requestBody = {
+        ...values,
+        gameName,
+        eventId:event.eventId
+      }
+      const url = API.ADD_GAME_TO_EVENT;
+      const res = await axios.post(url, requestBody);
+      if(res.status === 200){
+        message.success("Game is added to event, copies are reserved");
+        form.resetFields();
+        onCancel()
+      }else {
+        message.error("Failed to add game, please try again")
+      }
+    }catch(err){
+      message.error("Failed to add game, please try again")
+    }
+  }
+
+  
   const [form] = Form.useForm();
+  const selectedGameId = Form.useWatch('gameId', form);
+  const selectedGame = useMemo(() => {
+    if(selectedGameId){
+      return games.find(item => item.gameId === selectedGameId);
+    }
+  }, [selectedGameId, games]);
+
   return (
     <Modal
       visible={visible} 
@@ -21,8 +62,7 @@ const EventAddGameForm = ({ visible, onCreate, onCancel, games }) => {
         form
           .validateFields()
           .then((values) => {
-            form.resetFields();
-            onCreate(values);
+            addGameToEvent(values)
           })
           .catch((info) => {
             console.log('Validate Failed:', info);
@@ -35,7 +75,7 @@ const EventAddGameForm = ({ visible, onCreate, onCancel, games }) => {
         name="form_in_modal"
       >
         <Form.Item
-          name="gameName"
+          name="gameId"
           label="Name"
           rules={[
             {
@@ -58,6 +98,17 @@ const EventAddGameForm = ({ visible, onCreate, onCancel, games }) => {
             options={options}
           />
         </Form.Item>
+
+        {
+          selectedGame && <div>
+            <Title level={5}>
+              Original Price: {selectedGame?.original_price}
+            </Title>
+            <Title level={5}>
+              Available Copies: {selectedGame?.codesForSale?.length??0}
+            </Title>
+          </div>
+        }
           
         <Form.Item
           name="promotePrice"

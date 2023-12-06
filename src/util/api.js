@@ -305,3 +305,8 @@ export const GET_ALLGAME_STREAMING_DATA = `${domain}/twitch/all_game_streaming_d
 
 //liveshoppingEvent
 export const CREATE_LIVE_SHOPPING = `${domain}/liveShoppingEvent/create`;
+export const ADD_GAME_TO_EVENT = `${domain}/liveShoppingEvent/add_game`;
+export const REMOVE_GAME_FROM_EVENT = `${domain}/liveShoppingEvent/remove_game`;
+export const START_EVENT = `${domain}/liveShoppingEvent/start`;
+export const END_EVENT = `${domain}/liveShoppingEvent/end`;
+export const SELECT_EVENT_PROMOTE_GAME = `${domain}/liveShoppingEvent/select_promote_game`;

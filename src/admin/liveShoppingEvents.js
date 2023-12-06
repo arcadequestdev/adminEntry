@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { Tabs } from 'antd';
 import Firebase from "../util/firebase";
 import styled from "styled-components";
-import CreateLiveShoppingEventForm from "./components/createLiveShoppingEventForm";
+import CreateLiveShoppingEventForm from "./events/createLiveShoppingEventForm";
 import EventList from "./events/eventList";
 const { TabPane } = Tabs;
 

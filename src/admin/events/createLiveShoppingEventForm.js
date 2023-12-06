@@ -137,6 +137,18 @@ const CreateLiveShoppingEventForm = () => {
       </Form.Item>
 
       <Form.Item
+        name="streamUrl"
+        label="Stream Url"
+        labelAlign='Right'
+        rules={[{ required: true,  message: "this field is required" }]}
+      >
+        <Input autoComplete="off" />
+      </Form.Item>
+
+
+      
+
+      <Form.Item
         name="description"
         label="description"
         labelAlign='Right'
