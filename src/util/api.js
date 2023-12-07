@@ -1,5 +1,5 @@
-const domain = "http://localhost:8000";
-/* const domain = "https://arcadequest-l3pj.onrender.com"; */
+/* const domain = "http://localhost:8000"; */
+const domain = "https://arcadequest-l3pj.onrender.com";
 /* const domain = "https://testserver-fnby.onrender.com"; */
 /* const statsDomain = "http://localhost:8000"; */
 const statsDomain = "https://arcadequeststats.onrender.com";
