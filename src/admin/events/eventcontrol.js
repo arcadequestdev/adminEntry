@@ -106,6 +106,34 @@ const EventControl = ({viewAll, event, games}) => {
     }
   }
 
+  const orderColumn = [
+    {
+      title: "Name",
+      dataIndex: "gameName",
+      key: "gameName",
+    },
+    {
+      title: "UserId",
+      dataIndex: "userId",
+      key: "userId",
+    },
+    {
+      title: "Code",
+      dataIndex: "code",
+      key: "code",
+    },
+    {
+      title: "Time",
+      key: "date",
+      render:(record) => {
+        return <span>
+          {moment(record.date).format("lll")}
+        </span>
+      }
+    },
+
+  ]
+
   const gameColumn = [
     {
       title: "Name",
@@ -118,10 +146,17 @@ const EventControl = ({viewAll, event, games}) => {
       dataIndex:'price'
     },
     {
-      title:'Copies',
+      title:'Total Copies',
       key:'copies',
       render:(record) => {
-        return record?.codes?.length
+        return record?.copies??0
+      }
+    },
+    {
+      title:'Copies Left',
+      key:'copies',
+      render:(record) => {
+        return record?.codes?.length??0
       }
     },
     {
@@ -192,6 +227,8 @@ const EventControl = ({viewAll, event, games}) => {
       <Descriptions.Item label="Status" span={1}>{getStatusMap(event.status)}</Descriptions.Item>
       <Descriptions.Item label="Register Users" span={1}>{event?.registerUsers?.length}</Descriptions.Item>
       <Descriptions.Item label="Promote Games" span={2}>{event?.games?.length}</Descriptions.Item>
+      <Descriptions.Item label="Total Views" span={1}>{event?.totalViews??0}</Descriptions.Item>
+      <Descriptions.Item label="Current Viewers" span={2}>{event?.currentViewers?.length??0}</Descriptions.Item>
       <Descriptions.Item label="Background" span={2}><img src={event.backgroundImage} alt="background" style={{width:200}}/></Descriptions.Item>
       <Descriptions.Item label="Promo Video" span={2}>{
         event.video && 
@@ -237,7 +274,11 @@ const EventControl = ({viewAll, event, games}) => {
           />
       </Col>
       <Col className="gutter-row" span={12}>
-        <div >col-6</div>
+        <Title level={4}>Orders</Title>
+         <Table
+          columns={orderColumn}
+          dataSource={event.orders??[]}
+          />
       </Col>
     </Row>
     <EventAddGameForm
