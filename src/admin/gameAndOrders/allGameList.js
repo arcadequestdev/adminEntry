@@ -2,17 +2,20 @@ import React, {useEffect, useState, useMemo} from 'react';
 import { Table, Button, message} from 'antd';
 import axios from 'axios';
 import * as API from "../../util/api";
-import SetPriceModal from './setPriceModal';
-import AddGameKeysModal from './addGameKeysModal';
+import { Input, Space } from 'antd';
+
+import { SearchOutlined } from '@ant-design/icons';
+import GameDetail from './gameDetail';
 
 
-const AllGameList = ({games}) => {
+const AllGameList = ({games, orders}) => {
 
   const [streamingData, setStreamingData] = useState([]);
-  const [priceModalOpen, setPriceModalOpen] = useState(false);
-  const [keysModalOpen, setKeysModalOpen] = useState(false);
 
   const [currentId, setCurrentId] = useState(null);
+  const [input, setInput] = useState("")
+
+  const [view, setView] = useState("all");
 
   useEffect(() => {
   
@@ -51,7 +54,8 @@ const AllGameList = ({games}) => {
   }
 
   const dataSourece = useMemo(() => {
-    const gamesWithCount =  games.map((item) => {
+    const searchResult = games.filter(item => item?.name.toLowerCase().includes(input.toLowerCase()));
+    const gamesWithCount =  searchResult.map((item) => {
       const twitchAssigned = item.detailOnTwitch ? true: false;
       const findItem = streamingData.find(game => game.gameId === item.gameId);
       const streamingCount = findItem ? findItem.currentStreaming : 0;
@@ -65,7 +69,9 @@ const AllGameList = ({games}) => {
     return gamesWithCount.sort((a,b) => 
       b.streamingCount - a.streamingCount
     )
-  }, [games, streamingData])
+  }, [games, streamingData, input])
+
+
 
   const columns = [
     {
@@ -123,24 +129,13 @@ const AllGameList = ({games}) => {
     onFilter: (value, record) => record.promoted === value,
   },
   {
-    title:"Promote Price",
+    title:"Manage",
     render:(record) => {
       return <Button type="primary" onClick={() => {
         setCurrentId(record.gameId)
-        setPriceModalOpen(true)
+        setView('detail')
       }}>
-        Set Price
-      </Button>
-    }
-  },
-  {
-    title:"Keys",
-    render:(record) => {
-      return <Button type="primary" onClick={() => {
-        setCurrentId(record.gameId)
-        setKeysModalOpen(true)
-      }}>
-        Manage Keys
+       Manage
       </Button>
     }
   }
@@ -153,36 +148,37 @@ const AllGameList = ({games}) => {
     }else {
       return null;
     }
-  }, [currentId, games])
+  }, [currentId, games]);
+
+  const currentRecordOrders = useMemo(() => {
+    if(currentId){
+      return orders.filter(item =>item.gameId === currentId);
+    }
+    return []
+  },[orders, currentId])
 
   return <>
-  <Table columns={columns} dataSource={dataSourece} />
   {
-    currentRecord && <SetPriceModal
-    currentRecord={currentRecord}
-    visible={priceModalOpen}
-    handleCancel={() => {
-      setPriceModalOpen(false)
-    }}
-    handleFinish={() => {
-      setPriceModalOpen(false);
-      setCurrentId(null)
-    }}
-/>
+    view === 'all' && <><Input placeholder='Search for game' onChange={(e) => {
+      setInput(e.target.value)
+    }} 
+    value={input}
+    prefix={<SearchOutlined  />} 
+    style={{width:300, marginBottom:16}}
+    />
+    <Table columns={columns} dataSource={dataSourece} />
+    </>
   }
   {
-    currentRecord && <AddGameKeysModal 
-    currentRecord={currentRecord}
-    visible={keysModalOpen}
-    handleCancel={() => {
-      setKeysModalOpen(false)
-    }}
-    handleFinish={() => {
-      setKeysModalOpen(false);
+    view === 'detail' && currentRecord && <GameDetail currentRecord={currentRecord}
+    currentRecordOrders={currentRecordOrders}
+    backToAll={() => {
+      setView("all")
       setCurrentId(null)
     }}
     />
   }
+ 
   </>
 }
 

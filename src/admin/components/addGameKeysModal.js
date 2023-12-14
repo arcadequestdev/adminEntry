@@ -8,26 +8,7 @@ const AddGameKeysModal = ({currentRecord, visible,  handleCancel, handleFinish})
   const [keys, setKeys] = useState([]);
   const [input, setInput] = useState("");
 
-  const title = `Manage Keys For ${currentRecord?.name}`;
-
-  const handleDelete = async (item) => {
-    try {
-      const requestBody = {
-        gameId:currentRecord.gameId,
-        code:item
-      }
-      const url = API.DELETE_GAME_SALE_CODE;
-      const res = await axios.post(url, requestBody);
-      if(res.status === 200){
-        message.success("Successfully delete the code")
-      }else {
-        message.error("Failed to delete code")
-      }
-    }catch(err){
-      console.log(err)
-      message.error("Failed to delete code")
-    }
-  }
+  const title = ` Add Keys For ${currentRecord?.name}`;
 
   const addNewKeys = async () => {
     const newKeys = input.split('\n');
@@ -57,33 +38,9 @@ const AddGameKeysModal = ({currentRecord, visible,  handleCancel, handleFinish})
       Return
     </Button>
   ]}>
-    <h3>
-      Available Keys
-    </h3>
-    <List
-        size="large"
-        pagination={{
-          pageSize: 5,
-        }}
-        dataSource={currentRecord.codesForSale}
-        renderItem={(item, index) => (
-          <List.Item
-            actions={[
-              <Button
-                type="danger"
-                onClick={() => handleDelete(item)}
-              >
-                Delete
-              </Button>
-            ]}
-          >
-            {item}
-          </List.Item>
-        )}
-      />
       <TextArea rows={4} value={input} onChange={(e) => {
         setInput(e.target.value)
-      }} style={{marginTop:16}}/>  
+      }} />  
       <Button type="primary" onClick={() => {
         addNewKeys()
       }} style={{marginTop:16}}>

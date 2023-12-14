@@ -1,13 +1,10 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Tabs } from 'antd';
-import Firebase from "../util/firebase";
 import styled from "styled-components";
 import CreatePartnerForm from "./components/createPartnerForm";
 import CreateGameByAppId from "./components/createGameByAppId";
 import PartnersList from "./components/partnersList";
 import CreateProductForm from "./components/createProductForm";
-import AllGameList from "./components/allGameList";
-import { useSelector } from "react-redux";
 const { TabPane } = Tabs;
 
 const Partner = ({partners, games}) => {
@@ -33,11 +30,6 @@ const Partner = ({partners, games}) => {
   <Container>
     {/* <CreateGameForm partners={partners} /> */}
     <CreateGameByAppId partners={partners} />
-  </Container>
-  </TabPane>
-  <TabPane tab="Current Games" key="5">
-  <Container>
-    <AllGameList games={games} />
   </Container>
   </TabPane>
 </Tabs>

@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Button,
   Form,
@@ -8,46 +8,32 @@ import {
   InputNumber,
   Upload,
   Typography,
-  DatePicker
+  DatePicker,
+  Modal,
 } from 'antd';
-import * as API from "../../util/api";
-import axios from "axios";
-import firebase from "firebase/app";
-import Firebase from "../../util/firebase";
+import * as API from '../../util/api';
+import axios from 'axios';
+import firebase from 'firebase/app';
+import Firebase from '../../util/firebase';
 import { UploadOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 const { Option } = Select;
 const { Text } = Typography;
 
-const CreateLiveShoppingEventForm = () => {
+const EditEventModal = ({ visible, initialValues, onCancel, updateEventData}) => {
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
-
-    try {
-      const requestBody = {
-        ...values
-      }
-      const url = API.CREATE_LIVE_SHOPPING;
-      const res = await axios.post(url, requestBody);
-      if(res.status === 200){
-        form.resetFields();
-        message.success("Live Shopping Event is Created")
-      }else {
-        message.error("Failed to create event, please try again")
-      }
-    }catch(err){
-      message.error("Failed to create event, please try again")
-    }
-  }
+    updateEventData(values)
+  };
 
   const handleChange = async (info) => {
-    if (info.file.status === "done") {
-      console.log("done");
+    if (info.file.status === 'done') {
+      console.log('done');
     }
-    if (info.file.status === "error") {
-      console.log("upload error");
+    if (info.file.status === 'error') {
+      console.log('upload error');
     }
   };
 
@@ -110,16 +96,25 @@ const CreateLiveShoppingEventForm = () => {
       console.log(err);
     }
   };
+  // Set initial form values when in edit mode
+  form.setFieldsValue(initialValues);
 
- return <Form
-      name="validate_other"
-      onFinish={onFinish}
-      labelCol={{ span: 24 }}
-      style={{maxWidth:800}}
-      form={form}
-      
+  return (
+    <Modal
+      visible={visible}
+      title="Edit Live Shopping Event"
+      onCancel={onCancel}
+      footer={null}
+      destroyOnClose={true}
     >
-      <Form.Item
+      <Form
+        name="validate_other"
+        onFinish={onFinish}
+        labelCol={{ span: 24 }}
+        style={{ maxWidth: 800 }}
+        form={form}
+      >
+         <Form.Item
         name="title"
         label="Event Title"
         labelAlign='Right'
@@ -226,10 +221,12 @@ const CreateLiveShoppingEventForm = () => {
         style={{marginTop:32}}
       >
         <Button type="primary" htmlType="submit" >
-          Create New
+          Save
         </Button>
       </Form.Item>
-    </Form>
-}
+      </Form>
+    </Modal>
+  );
+};
 
-export default CreateLiveShoppingEventForm;
+export default EditEventModal;

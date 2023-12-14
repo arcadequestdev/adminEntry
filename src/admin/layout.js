@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import Influencer from './influencer';
 import Session from './session';
 import LiveShoppingEvents from './liveShoppingEvents';
+import GameAndOrders from './gameAndOrders';
 import { useDispatch } from "react-redux";
 const { Header, Sider, Content } = Layout;
 
@@ -217,11 +218,6 @@ Admin
            }}>
           Matches
           </Menu.Item> */}
-          <Menu.Item key="7" icon={<AppstoreOutlined />} onClick={()=> {
-             setOption("7")
-           }}>
-          Partner Companys
-          </Menu.Item>
           <Menu.Item key="8" icon={<AppstoreOutlined />} onClick={()=> {
              setOption("8")
            }}>
@@ -232,11 +228,16 @@ Admin
            }}>
           Exchange
           </Menu.Item>
-         {/*  <Menu.Item key="10" icon={<PayCircleOutlined />} onClick={()=> {
+          <Menu.Item key="7" icon={<AppstoreOutlined />} onClick={()=> {
+             setOption("7")
+           }}>
+          Partner Companys
+          </Menu.Item>
+         <Menu.Item key="10" icon={<PayCircleOutlined />} onClick={()=> {
              setOption("10")
            }}>
-          Investment
-          </Menu.Item> */}
+          Games && Orders
+          </Menu.Item> 
           <Menu.Item key="11" icon={<UsergroupAddOutlined />} onClick={()=> {
              setOption("11")
            }}>
@@ -315,6 +316,9 @@ Admin
           }
           { 
             option === '13' && <LiveShoppingEvents partners={partners} games={games}/>
+          }
+          {
+            option === '10' && <GameAndOrders partners={partners} games={games} />
           }
         </Content>
       </Layout>

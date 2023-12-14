@@ -6,11 +6,13 @@ import ReactPlayer from "react-player";
 import EventAddGameForm from './eventAddGameForm';
 import * as API from "../../util/api";
 import axios from "axios";
+import EditEventModal from './editEventModal';
 
 const { Title } = Typography;
 
 const EventControl = ({viewAll, event, games}) => {
   const [open, setOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const getStatusMap = (status) => {
     if(status === 0) return 'Pending'
@@ -33,6 +35,23 @@ const EventControl = ({viewAll, event, games}) => {
       }
     }catch(err){
       message.error("Failed to start event, please try again")
+    }
+  } 
+
+  const cancelEvent = async () => {
+    try {
+      const requestBody = {
+        eventId:event.eventId
+      }
+      const url = API.CANCEL_EVENT;
+      const res = await axios.post(url, requestBody);
+      if(res.status === 200){
+        message.success("Event is Ended")
+      }else {
+        message.error("Failed to end event, please try again")
+      }
+    }catch(err){
+      message.error("Failed to end event, please try again")
     }
   } 
 
@@ -190,6 +209,25 @@ const EventControl = ({viewAll, event, games}) => {
     return null;
   }, [event])
 
+  const updateEventData = async (values) => {
+    try {
+      const requestBody = {
+        eventId:event.eventId,
+        updatedData:values
+      }
+      const url = API.EDIT_EVENT;
+      const res = await axios.post(url, requestBody);
+      if(res.status === 200){
+        message.success("Event is Updated")
+        setEditModalOpen(false)
+      }else {
+        message.error("Failed to update event, please try again")
+      }
+    }catch(err){
+      message.error("Failed to update event, please try again")
+    }
+  }
+
   return <>
   <Button onClick={viewAll}>
    Back To Events
@@ -200,8 +238,17 @@ const EventControl = ({viewAll, event, games}) => {
       <Title level={4}>{event.title}</Title>
       {
         event.status === 0 && <>
-        <Button type="primary" style={{marginRight:16, marginLeft:"auto"}} >
+        <Button type="primary" style={{marginRight:16, marginLeft:"auto"}} onClick={() => {
+          setEditModalOpen(true)
+        }}>
           Edit
+        </Button>
+        <Button type="primary" style={{marginRight:16}}
+        onClick={() => {
+          cancelEvent()
+        }}
+        >
+          Cancel
         </Button>
         <Button type="primary" onClick={() => {
           startEvent()
@@ -288,6 +335,17 @@ const EventControl = ({viewAll, event, games}) => {
     }}
     games={games}
     event={event}
+    />
+    <EditEventModal 
+    visible={editModalOpen}
+    onCancel={() => {
+      setEditModalOpen(false);
+    }}
+    initialValues={event? {
+      ...event,
+      startTime:moment(event.startTime)
+    }:{}}
+    updateEventData={updateEventData}
     />
   </>
 }
