@@ -1,5 +1,5 @@
-const domain = "http://localhost:8000";
-/* const domain = "https://arcadequest-l3pj.onrender.com"; */
+/* const domain = "http://localhost:8000"; */
+const domain = "https://arcadequest-l3pj.onrender.com";
 /* const domain = "https://testserver-fnby.onrender.com"; */
 /* const statsDomain = "http://localhost:8000"; */
 const statsDomain = "https://arcadequeststats.onrender.com";
@@ -313,3 +313,4 @@ export const CANCEL_EVENT = `${domain}/liveShoppingEvent/cancel`;
 export const EDIT_EVENT = `${domain}/liveShoppingEvent/edit`;
 export const SELECT_EVENT_PROMOTE_GAME = `${domain}/liveShoppingEvent/select_promote_game`;
 export const CLEAR_EVENT_PROMOTE_GAME = `${domain}/liveShoppingEvent/clear_promote_game`;
+export const EVENT_GAME_REFILL = `${domain}/liveShoppingEvent/refill_game`;

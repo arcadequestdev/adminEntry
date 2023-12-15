@@ -7,12 +7,15 @@ import EventAddGameForm from './eventAddGameForm';
 import * as API from "../../util/api";
 import axios from "axios";
 import EditEventModal from './editEventModal';
+import AddCopiesModal from './addCopiesModal';
 
 const { Title } = Typography;
 
 const EventControl = ({viewAll, event, games}) => {
   const [open, setOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [currentGameId, setCurrentGameId] = useState(null);
 
   const getStatusMap = (status) => {
     if(status === 0) return 'Pending'
@@ -183,18 +186,34 @@ const EventControl = ({viewAll, event, games}) => {
       key:'operation',
       render:(record) => {
         if(event.status === 0){
-          return <Button type="primary" onClick={() => {
+          return <div style={{display:'flex'}}>
+          <Button type="primary" style={{marginRight:16}} onClick={() => {
             removeGame(record.gameId)
            }}>
              Remove
            </Button>
+           <Button type="primary" onClick={() => {
+            setCurrentGameId(record.gameId);
+            setAddModalOpen(true);
+           }}>
+            Add Copies
+          </Button>
+          </div>
         }
         if(event.status === 1 && event?.currentPromoteGame !== record.gameId){
-          return <Button type="primary" onClick={() => {
+          return <div style={{display:'flex'}}>
+          <Button type="primary" onClick={() => {
             selectPromoteGame(record.gameId)
            }}>
              Select
            </Button>
+           <Button type="primary" onClick={() => {
+            setCurrentGameId(record.gameId);
+            setAddModalOpen(true);
+           }}>
+            Add Copies
+          </Button>
+          </div>
         }
       }
     }
@@ -336,6 +355,17 @@ const EventControl = ({viewAll, event, games}) => {
     games={games}
     event={event}
     />
+    <AddCopiesModal 
+    visible={addModalOpen} 
+    onCancel={() => {
+      setAddModalOpen(false)
+      setCurrentGameId(null)
+    }}
+    games={games}
+    currentGameId={currentGameId}
+    event={event}
+    />
+
     <EditEventModal 
     visible={editModalOpen}
     onCancel={() => {
