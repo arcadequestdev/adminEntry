@@ -2,16 +2,18 @@ import React, {useEffect, useState, useMemo} from 'react';
 import axios from 'axios';
 import * as API from "../../util/api";
 import { Table, Button, message, Descriptions, Collapse, Divider, Col, Row, Typography, List} from 'antd';
-import SetPriceModal from '../components/setPriceModal';
-import AddGameKeysModal from '../components/addGameKeysModal';
+import SetPriceModal from './components/setPriceModal';
+import AddGameKeysModal from './components/addGameKeysModal';
 import ReactPlayer from "react-player";
 import moment from 'moment'
+import UploadVideoModal from './components/uploadVideoModal';
 const { Title } = Typography;
 const { Panel } = Collapse;
 
 const GameDetail = ({currentRecord, backToAll, currentRecordOrders}) => {
   const [priceModalOpen, setPriceModalOpen] = useState(false);
   const [keysModalOpen, setKeysModalOpen] = useState(false);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   const handleDelete = async (item) => {
     try {
@@ -135,6 +137,21 @@ const transColumns = [
     </Panel>
 </Collapse>
 <Divider />
+    <div style={{display:'flex'}}>
+        <Button type="primary" onClick={() => {
+          setPriceModalOpen(true)
+        }}
+        style={{marginRight:16}}
+        >
+          Set All Day Sale Price
+        </Button>
+        <Button type="primary" onClick={() => {
+          setVideoModalOpen(true)
+        }}>
+          Manage Ad Videos
+        </Button>
+        </div>
+<Divider />
 <Row gutter={[16, 16]}>
   <Col span={12}>
     <div style={{display:'flex', justifyContent:'space-between', marginBottom:12}}>
@@ -224,6 +241,18 @@ const transColumns = [
     }}
     handleFinish={() => {
       setPriceModalOpen(false);
+    }}
+/>
+  }
+  {
+    currentRecord && <UploadVideoModal
+    currentRecord={currentRecord}
+    visible={videoModalOpen}
+    handleCancel={() => {
+      setVideoModalOpen(false)
+    }}
+    handleFinish={() => {
+      setVideoModalOpen(false);
     }}
 />
   }

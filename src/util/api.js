@@ -197,6 +197,8 @@ export const GET_GAME_SHORTLIST = `${domain}/partner/get_game_shortlist`;
 export const GET_GAME_ALLLIST = `${domain}/partner/get_game_allList`;
 export const CHANGE_GAME_STATUS = `${domain}/partner/change_game_status`;
 export const SET_GAME_PRICE = `${domain}/partner/set_game_price`;
+export const GAME_ADD_AD_VIDEO = `${domain}/partner/game_add_adVideo`;
+export const GAME_DELETE_AD_VIDEO = `${domain}/partner/game_delete_adVideo`;
 export const CHECK_GAME = `${domain}/partner/check_game`;
 
 // influencers

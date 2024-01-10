@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {  Modal, Button, Input, message, List } from 'antd';
-import * as API from "../../util/api";
+import * as API from "../../../util/api";
 import axios from "axios";
 const { TextArea } = Input;
 
