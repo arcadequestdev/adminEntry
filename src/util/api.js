@@ -185,11 +185,6 @@ export const ADD_PARTNER_TEAMMEMBER = `${domain}/partner/add_member`;
 export const REMOVE_BRAND_TEAMMEMBER = `${domain}/partner/remove_member`;
 export const UPDATE_PRODUCT = `${domain}/partner/updateProduct`;
 export const CREATE_GAME = `${domain}/partner/create_game`;
-export const ADD_GAME_CODE = `${domain}/partner/add_game_code`;
-export const ADD_SALE_GAME_CODE_ARRAY = `${domain}/partner/add_sale_game_code_array`;
-export const DELETE_GAME_SALE_CODE = `${domain}/partner/delete_game_sale_code`;
-export const REDEEM_GAME_CODE = `${domain}/partner/redeem_game_code`;
-export const DELETE_GAME_CODE = `${domain}/partner/delete_game_code`;
 export const UPDATE_GAME = `${domain}/partner/update_game`;
 export const PUBLISH_GAME = `${domain}/partner/publish_game`;
 export const SUBMIT_GAME_REVIEW = `${domain}/partner/submit_game_review`;
@@ -200,6 +195,16 @@ export const SET_GAME_PRICE = `${domain}/partner/set_game_price`;
 export const GAME_ADD_AD_VIDEO = `${domain}/partner/game_add_adVideo`;
 export const GAME_DELETE_AD_VIDEO = `${domain}/partner/game_delete_adVideo`;
 export const CHECK_GAME = `${domain}/partner/check_game`;
+
+// parnter game code
+
+export const ADD_GAME_CODE = `${domain}/partner/add_game_code`;
+export const ADD_SALE_GAME_CODE_ARRAY = `${domain}/partner/add_sale_game_code_array`;
+export const DELETE_GAME_SALE_CODE = `${domain}/partner/delete_game_sale_code`;
+export const REDEEM_GAME_CODE = `${domain}/partner/redeem_game_code`;
+export const DELETE_GAME_CODE = `${domain}/partner/delete_game_code`;
+
+
 
 // influencers
 export const CREATE_INFLUENCERS = `${domain}/influencer/create`;

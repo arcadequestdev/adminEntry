@@ -177,6 +177,9 @@ const transColumns = [
             actions={[
               <Button
                 type="danger"
+                onClick={() => {
+                  handleDelete(item)
+                }}
               >
                 Delete
               </Button>
@@ -204,7 +207,6 @@ const transColumns = [
             actions={[
               <Button
                 type="danger"
-                onClick={() => handleDelete(item)}
               >
                 Delete
               </Button>
