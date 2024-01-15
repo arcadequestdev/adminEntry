@@ -35,7 +35,7 @@ const UploadVideoModal = ({currentRecord, visible,  handleCancel, handleFinish})
     try {
       const requestBody = {
         gameId:currentRecord.gameId,
-        url:item
+        videoId:item.videoId
       }
       const url = API.GAME_DELETE_AD_VIDEO;
       const res = await axios.post(url, requestBody);
@@ -116,7 +116,7 @@ const UploadVideoModal = ({currentRecord, visible,  handleCancel, handleFinish})
             ]}
           >
             <ReactPlayer
-              url={item}
+              url={item.url}
               playing={false}
               width="200px"
               height='200px'
