@@ -5,6 +5,7 @@ import AllGameList from "./allGameList";
 import OrderList from "./orderList";
 import { useSelector } from "react-redux";
 import Firebase from "../../util/firebase";
+import CreateVotingGame from "./components/createVotingGame";
 const { TabPane } = Tabs;
 
 const GameAndOrders = ({partners, games}) => {
@@ -37,6 +38,11 @@ const GameAndOrders = ({partners, games}) => {
   <TabPane tab="Game Orders" key="2">
   <Container>
     <OrderList orders={orders} />
+  </Container>
+  </TabPane>
+  <TabPane tab="Game Voting" key="3">
+  <Container>
+    <CreateVotingGame />
   </Container>
   </TabPane>
 </Tabs>

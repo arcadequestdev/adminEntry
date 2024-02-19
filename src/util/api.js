@@ -321,3 +321,6 @@ export const EDIT_EVENT = `${domain}/liveShoppingEvent/edit`;
 export const SELECT_EVENT_PROMOTE_GAME = `${domain}/liveShoppingEvent/select_promote_game`;
 export const CLEAR_EVENT_PROMOTE_GAME = `${domain}/liveShoppingEvent/clear_promote_game`;
 export const EVENT_GAME_REFILL = `${domain}/liveShoppingEvent/refill_game`;
+
+// steam-game
+export const ADD_STEAM_GAME_VOTING = `${domain}/steam-games/add_game_voting`;
